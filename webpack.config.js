@@ -9,6 +9,9 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
   },
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx']
+  },
   module: {
     rules: [
       {
@@ -25,7 +28,8 @@ module.exports = {
   devtool: 'inline-source-map',
   devServer: {
     hot: true,
-    open: true
+    open: true,
+    clientLogLevel: "none"
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
