@@ -1,0 +1,43 @@
+{
+  "name": "swamp",
+  "version": "0.0.1",
+  "description": "Environment, resources, species, organisms.",
+  "main": "dist/index.html",
+  "scripts": {
+    "start": "webpack-dev-server",
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slavicronenko/swamp.git"
+  },
+  "keywords": [
+    "js",
+    "ts",
+    "javascript",
+    "typescript",
+    "swamp",
+    "environment",
+    "resources",
+    "species",
+    "organisms"
+  ],
+  "author": "Viacheslav Ronenko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/slavicronenko/swamp/issues"
+  },
+  "homepage": "https://github.com/slavicronenko/swamp#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "ts-loader": "^5.0.0",
+    "tslint": "^5.11.0",
+    "tslint-loader": "^3.6.0",
+    "typescript": "^3.0.3",
+    "webpack": "^4.17.2",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.7"
+  }
+}
