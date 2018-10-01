@@ -1,7 +1,7 @@
 import {
-  random,
   isFunction
 } from './Helper';
+import { Resource } from './Resource';
 
 export class Environment {
   constructor(givenSettings = Environment.DEFAULT_SETTINGS) {
@@ -11,7 +11,7 @@ export class Environment {
   }
 
   private paused: boolean = true;
-  private resources: IResource[];
+  private resources: Resource[];
 
   public live(): void {
     if (this.paused) {
@@ -43,30 +43,18 @@ export class Environment {
 
   public static get DEFAULT_SETTINGS(): IEnvironmentSettings {
     return {
-      resources: [{
-        name: 'food',
-        minFraction: 0,
-        maxFraction: 3,
-        getSome() {
-          return random(this.minFraction, this.maxFraction, 1);
-        },
-        renew(environment: Environment) {
-          // console.log(environment);
-        }
-      }]
+      resources: [
+        new Resource({
+          type: 'food',
+          minPortion: 0,
+          maxPortion: 3,
+          precision: 1
+        })
+      ]
     };
   }
 }
 
 export interface IEnvironmentSettings {
-  resources: IResource[];
-}
-
-export interface IResource {
-  name: string;
-  minFraction: number;
-  maxFraction: number;
-  getSome(): number;
-  amount?: null | number;
-  renew?(environment: Environment): void;
+  resources: Resource[];
 }
