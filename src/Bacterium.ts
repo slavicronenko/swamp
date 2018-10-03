@@ -5,10 +5,21 @@ export class Bacterium {
     Object.assign(this, settings);
   }
 
-  private ration: string[];
   private resources: Resource[];
+  private readonly ration: string[]; // TODO: Get rid of inspection notification
 
-  public eat(...resources: Resource[]): void {
+  // TODO: Add effort property, which shows how much resources bacterium spends each iteration
+
+  // TODO: Find some better name for this method
+  public lifeCycleIteration(resources: Resource[]): boolean {
+    const isAlive = true;
+
+    this.eat(resources);
+
+    return isAlive;
+  }
+
+  public eat(resources: Resource[]): void {
     resources.forEach((resource: Resource) => this.canConsume(resource) && this.consume(resource));
   }
 

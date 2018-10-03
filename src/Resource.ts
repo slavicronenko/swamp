@@ -14,7 +14,7 @@ export class Resource {
   private readonly precision: number = 0;
   private amount: number = Number.POSITIVE_INFINITY;
 
-  private getPortion(): Resource {
+  public getPortion(): Resource {
     const {
       type,
       amount,

@@ -3,7 +3,7 @@ import { Resource } from './Resource';
 import { Bacterium } from './Bacterium';
 import { random } from './Helper';
 
-const NUMBER_OF_ORGANISMS = 100;
+const NUMBER_OF_BECTERIA = 100;
 
 const resources = [
   new Resource({
@@ -13,7 +13,7 @@ const resources = [
     precision: 1
   })
 ];
-const organisms = Array(NUMBER_OF_ORGANISMS)
+const bacteria = Array(NUMBER_OF_BECTERIA)
   .fill(null)
   .map(() => {
     const startingResources = resources.map((resource) => {
@@ -33,7 +33,7 @@ const organisms = Array(NUMBER_OF_ORGANISMS)
 
 const env = new Environment({
   resources,
-  organisms
+  bacteria
 });
 
 env.live();

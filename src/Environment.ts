@@ -7,13 +7,13 @@ export class Environment {
   }
 
   private paused: boolean = true;
-  private readonly resources: Resource[];
-  private readonly organisms: Bacterium[];
+  private readonly resources: Resource[];  // TODO: Get rid of inspection notification
+  private readonly bacteria: Bacterium[];
 
   public live(): void {
     if (this.paused) {
       this.paused = false;
-      requestAnimationFrame(this.animationStep.bind(this));
+      requestAnimationFrame(this.nextIteration.bind(this));
     }
   }
 
@@ -21,16 +21,32 @@ export class Environment {
     this.paused = true;
   }
 
-  private animationStep(): void {
+  // TODO: Add resource rareness logic (chance not to get some resources)
+  public getSomeResources(): Resource[] {
+    return this.resources.map((resource: Resource) => resource.getPortion());
+  }
+
+  private nextIteration(): void {
     if (this.paused) {
       return;
     }
 
-    requestAnimationFrame(this.animationStep.bind(this));
+    // Can't use filter here, we need the same array, not a new one
+    for (let i = 0; i < this.bacteria.length; i += 1) {
+      const isCurrentBacteriaAlive = this.bacteria[i].lifeCycleIteration(this.getSomeResources());
+
+      if (!isCurrentBacteriaAlive) {
+        this.bacteria.splice(i, 1);
+
+        i -= 1;
+      }
+    }
+
+    requestAnimationFrame(this.nextIteration.bind(this));
   }
 }
 
 interface IEnvironmentSettings {
   resources: Resource[];
-  organisms: Bacterium[];
+  bacteria: Bacterium[];
 }
