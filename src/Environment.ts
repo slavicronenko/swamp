@@ -1,6 +1,3 @@
-import {
-  isFunction
-} from './Helper';
 import { Resource } from './Resource';
 
 export class Environment {
@@ -29,12 +26,7 @@ export class Environment {
       return;
     }
 
-    this.renewResources();
     requestAnimationFrame(this.animationStep.bind(this));
-  }
-
-  private renewResources(): void {
-    this.resources.forEach((resource) => isFunction(resource.renew) && resource.renew(this));
   }
 
   private getCombinedSettings(givenSettings: object): IEnvironmentSettings {
