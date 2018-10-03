@@ -3,11 +3,12 @@ import { generateString, isNumber, random } from './Helper';
 export class Resource {
   constructor(settings: IResourceSettings = Resource.GENERATE_SETTINGS()) {
     Object.assign(this, settings);
-    this.initialAmount = this.amount;
+    this.initialSettings = Object.assign({}, settings);
   }
 
-  private readonly type: string;
-  private readonly initialAmount: number;
+  public readonly type: string;
+
+  private readonly initialSettings: IResourceSettings;
   private readonly minPortion: number | null;
   private readonly maxPortion: number | null;
   private readonly precision: number = 0;
@@ -52,7 +53,11 @@ export class Resource {
     return this;
   }
 
-  private static GENERATE_SETTINGS() {
+  public toSettings(): IResourceSettings {
+    return Object.assign({}, this.initialSettings);
+  }
+
+  private static GENERATE_SETTINGS(): IResourceSettings {
     const precision = random(0, 2);
 
     return {
@@ -64,7 +69,7 @@ export class Resource {
   }
 }
 
-export interface IResourceSettings {
+interface IResourceSettings {
   type: string;
   amount?: number;
   minPortion?: number;
