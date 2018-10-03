@@ -3,9 +3,11 @@ import { generateString, isNumber, random } from './Helper';
 export class Resource {
   constructor(settings: IResourceSettings = Resource.GENERATE_SETTINGS()) {
     Object.assign(this, settings);
+    this.initialAmount = this.amount;
   }
 
   private readonly type: string;
+  private readonly initialAmount: number;
   private readonly minPortion: number | null;
   private readonly maxPortion: number | null;
   private readonly precision: number = 0;
@@ -14,28 +16,28 @@ export class Resource {
   private getPortion(): Resource {
     const {
       type,
-      amount: initialAmount,
+      amount,
       precision,
       minPortion,
       maxPortion
     } = this;
 
-    let amount = isNumber(minPortion) && isNumber(maxPortion)
+    let portion = isNumber(minPortion) && isNumber(maxPortion)
       ? random(minPortion, maxPortion, precision)
-      : initialAmount;
+      : amount;
 
-    if (amount > initialAmount) {
-      amount = initialAmount;
+    if (portion > amount) {
+      portion = amount;
     }
 
-    this.amount = initialAmount - amount;
+    this.amount = amount - portion;
 
     return new Resource({
       type,
-      amount,
       precision,
       minPortion,
-      maxPortion
+      maxPortion,
+      amount: portion
     });
   }
 
