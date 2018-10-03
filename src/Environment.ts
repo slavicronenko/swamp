@@ -1,14 +1,14 @@
 import { Resource } from './Resource';
+import { Bacterium } from './Bacterium';
 
 export class Environment {
-  constructor(givenSettings = Environment.DEFAULT_SETTINGS) {
-    const settings = this.getCombinedSettings(givenSettings);
-
-    this.resources = settings.resources;
+  constructor(settings: IEnvironmentSettings) {
+    Object.assign(this, settings);
   }
 
   private paused: boolean = true;
-  private resources: Resource[];
+  private readonly resources: Resource[];
+  private readonly organisms: Bacterium[];
 
   public live(): void {
     if (this.paused) {
@@ -28,25 +28,9 @@ export class Environment {
 
     requestAnimationFrame(this.animationStep.bind(this));
   }
-
-  private getCombinedSettings(givenSettings: object): IEnvironmentSettings {
-    return Object.assign({}, Environment.DEFAULT_SETTINGS, givenSettings);
-  }
-
-  public static get DEFAULT_SETTINGS(): IEnvironmentSettings {
-    return {
-      resources: [
-        new Resource({
-          type: 'food',
-          minPortion: 0,
-          maxPortion: 3,
-          precision: 1
-        })
-      ]
-    };
-  }
 }
 
-export interface IEnvironmentSettings {
+interface IEnvironmentSettings {
   resources: Resource[];
+  organisms: Bacterium[];
 }
