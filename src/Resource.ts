@@ -53,8 +53,13 @@ export class Resource {
     return this;
   }
 
-  public toSettings(): IResourceSettings {
-    return Object.assign({}, this.initialSettings);
+  public spend(amountToSpend: number): boolean {
+    const amount = this.amount - amountToSpend;
+    const isNotDepleted = amount > 0;
+
+    this.amount = isNotDepleted ? amount : 0;
+
+    return isNotDepleted;
   }
 
   public clone(settings: IResourcePartialSettings = {}): Resource {

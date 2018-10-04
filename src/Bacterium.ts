@@ -7,38 +7,24 @@ export class Bacterium {
 
   private resources: Resource[];
   private readonly ration: string[]; // TODO: Get rid of inspection notification
+  private readonly metabolismRatio: number; // TODO: find some elegant approach
 
-  // TODO: Add effort property, which shows how much resources bacterium spends each iteration
-
-  // TODO: Find some better name for this method
+  // TODO: Find some better name for this method and refactor it
   public lifeCycleIteration(resources: Resource[]): boolean {
-    const isAlive = true;
+    return this.resources.reduce((isAlive, ownResource) => {
+      const sameResource = resources.find((resource) => resource.type === ownResource.type);
 
-    this.eat(resources);
+      if (sameResource) {
+        ownResource.merge(sameResource);
+      }
 
-    return isAlive;
-  }
-
-  public eat(resources: Resource[]): void {
-    resources.forEach((resource: Resource) => this.canConsume(resource) && this.consume(resource));
-  }
-
-  private canConsume(resource: Resource): boolean {
-    return this.ration.includes(resource.type);
-  }
-
-  private consume(givenResource: Resource): void {
-    const sameResource = this.resources.find((ownResource) => ownResource.type === givenResource.type);
-
-    if (sameResource) {
-      sameResource.merge(givenResource);
-    } else {
-      this.resources.push(givenResource);
-    }
+      return isAlive && ownResource.spend(this.metabolismRatio);
+    }, true);
   }
 }
 
 interface IBacteriumSettings {
   resources: Resource[];
   ration: string[];
+  metabolismRatio: number;
 }

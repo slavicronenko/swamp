@@ -22,7 +22,8 @@ const bacteria = Array(NUMBER_OF_BACTERIA)
 
     return new Bacterium({
       ration: resources.map(({ type }: Resource) => type),
-      resources: startingResources
+      resources: startingResources,
+      metabolismRatio: 1.5
     });
   });
 
