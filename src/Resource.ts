@@ -57,6 +57,10 @@ export class Resource {
     return Object.assign({}, this.initialSettings);
   }
 
+  public clone(settings: IResourcePartialSettings = {}): Resource {
+    return new Resource(Object.assign({}, this.initialSettings, settings));
+  }
+
   private static GENERATE_SETTINGS(): IResourceSettings {
     const precision = random(0, 2);
 
@@ -71,6 +75,14 @@ export class Resource {
 
 interface IResourceSettings {
   type: string;
+  amount?: number;
+  minPortion?: number;
+  maxPortion?: number;
+  precision?: number;
+}
+
+interface IResourcePartialSettings {
+  type?: string;
   amount?: number;
   minPortion?: number;
   maxPortion?: number;

@@ -3,7 +3,7 @@ import { Resource } from './Resource';
 import { Bacterium } from './Bacterium';
 import { random } from './Helper';
 
-const NUMBER_OF_BECTERIA = 100;
+const NUMBER_OF_BACTERIA = 100;
 
 const resources = [
   new Resource({
@@ -13,16 +13,12 @@ const resources = [
     precision: 1
   })
 ];
-const bacteria = Array(NUMBER_OF_BECTERIA)
+const bacteria = Array(NUMBER_OF_BACTERIA)
   .fill(null)
   .map(() => {
-    const startingResources = resources.map((resource) => {
-      const settings = resource.toSettings();
-
-      settings.amount = random(5, 10);
-
-      return new Resource(settings);
-    });
+    const startingResources = resources.map((resource) =>
+      resource.clone({ amount: random(5, 10) })
+    );
 
     return new Bacterium({
       ration: resources.map(({ type }: Resource) => type),
