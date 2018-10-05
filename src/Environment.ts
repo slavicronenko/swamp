@@ -33,12 +33,19 @@ export class Environment {
 
     // Can't use filter here, we need the same array, not a new one
     for (let i = 0; i < this.bacteria.length; i += 1) {
-      const isCurrentBacteriaAlive = this.bacteria[i].lifeCycleIteration(this.getSomeResources());
+      const {
+        isAlive,
+        children
+      } = this.bacteria[i].lifeCycleIteration(this.getSomeResources());
 
-      if (!isCurrentBacteriaAlive) {
+      if (!isAlive) {
         this.bacteria.splice(i, 1);
 
         i -= 1;
+      }
+
+      if (children.length) {
+        this.bacteria.push(...children);
       }
     }
 
