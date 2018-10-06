@@ -7,7 +7,7 @@ const NUMBER_OF_BACTERIA = 100;
 
 const resources = [
   new Resource({
-    type: 'food',
+    name: 'food',
     minPortion: 0,
     maxPortion: 3,
     precision: 1
@@ -21,7 +21,7 @@ const bacteria = Array(NUMBER_OF_BACTERIA)
     );
 
     return new Bacterium({
-      ration: resources.map(({ type }: Resource) => type),
+      ration: resources.map(({ name }: Resource) => name),
       resources: startingResources,
       metabolismRatio: 1.5
     });

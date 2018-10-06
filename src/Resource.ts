@@ -6,7 +6,7 @@ export class Resource {
     this.initialSettings = Object.assign({}, settings);
   }
 
-  public readonly type: string;
+  public readonly name: string;
 
   private readonly initialSettings: IResourceSettings;
   private readonly minPortion: number | null;
@@ -20,7 +20,7 @@ export class Resource {
 
   public getPortion(): Resource {
     const {
-      type,
+      name,
       amount,
       precision,
       minPortion,
@@ -38,7 +38,7 @@ export class Resource {
     this.amount = amount - portion;
 
     return new Resource({
-      type,
+      name: name,
       precision,
       minPortion,
       maxPortion,
@@ -48,7 +48,7 @@ export class Resource {
 
   public merge(...resources: Resource[]): Resource {
     resources.forEach((resource: Resource) => {
-      if (this.type === resource.type) {
+      if (this.name === resource.name) {
         this.amount += resource.amount;
         resource.amount = 0;
       }
@@ -74,7 +74,7 @@ export class Resource {
     const precision = random(0, 2);
 
     return {
-      type: generateString(),
+      name: generateString(),
       precision,
       minPortion: random(0, 1, precision),
       maxPortion: random(1, 3, precision)
@@ -83,7 +83,7 @@ export class Resource {
 }
 
 interface IResourceSettings {
-  type: string;
+  name: string;
   amount?: number;
   minPortion?: number;
   maxPortion?: number;
@@ -91,7 +91,7 @@ interface IResourceSettings {
 }
 
 interface IResourcePartialSettings {
-  type?: string;
+  name?: string;
   amount?: number;
   minPortion?: number;
   maxPortion?: number;

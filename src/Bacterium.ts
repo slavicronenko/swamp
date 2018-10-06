@@ -19,7 +19,7 @@ export class Bacterium {
     const children = [];
 
     for (const ownResource of this.resources) {
-      const sameResource = resources.find((resource) => resource.type === ownResource.type);
+      const sameResource = resources.find((resource) => resource.name === ownResource.name);
 
       if (sameResource) {
         ownResource.merge(sameResource);
