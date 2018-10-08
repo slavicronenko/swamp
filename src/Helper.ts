@@ -37,8 +37,12 @@ export function countSubstrings(str: string, subStrs: string[]): { [id: string]:
     for (const subStr of subStrs) {
       const subStrLength = subStr.length;
 
+      if (isUndefined(result[subStr])) {
+        result[subStr] = 0;
+      }
+
       if (str.slice(letterPosition, letterPosition + subStrLength) === subStr) {
-        result[subStr] = isUndefined(result[subStr]) ? 1 : result[subStr] + 1;
+        result[subStr] += 1;
       }
     }
   }
