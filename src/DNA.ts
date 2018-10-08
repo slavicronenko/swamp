@@ -16,17 +16,23 @@ export class DNA {
     return Object.assign({}, this.genes);
   }
 
-  private static get USEFUL_GENES() {
+  public clone() {
+    return new DNA(this.code);  // TODO: might cause performance issues due to recalculation genes
+  }
+
+  private static get USEFUL_GENES(): string[] {
     return [
-      'm'
+      'a',
+      'g',
+      'z'
     ];
   }
 
-  private static get DEFAULT_CHARS() {
+  private static get DEFAULT_CHARS(): string {
     return 'abcdefghijklmnopqrstuvwxyz';
   }
 
-  private static get DEFAULT_LENGTH() {
+  private static get DEFAULT_LENGTH(): number {
     return 130;
   }
 }
