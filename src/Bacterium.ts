@@ -1,22 +1,25 @@
 import { Resource } from './Resource';
+import { DNA } from './DNA';
 
 export class Bacterium {
-  constructor(settings: IBacteriumSettings) {
-    Object.assign(this, settings, {
-      initialMass: settings.resources.reduce((wholeMass, { amount }) => wholeMass + amount, 0)
-    });
+  constructor(resources: Resource[], dna: DNA = new DNA()) {
+    const {
+      a,
+      z,
+      g: initialMass,
+    } = dna.getGenes(); // TODO: this logic should be unified and encapsulated in some method
+    this.resources = resources;
+    this.dna = dna;
 
-    for (const prop in Bacterium.PROPERTIES) {
-      if (Bacterium.PROPERTIES.hasOwnProperty(prop)) {
-        this[prop] = Bacterium.PROPERTIES[prop](settings.dna);
-      }
-    }
+    Object.assign(this, {
+      initialMass,
+      metabolismRatio: a + (z / 2)
+    });
   }
 
-  private resources: Resource[];
-  private readonly dna: string;
+  private readonly resources: Resource[];
+  private readonly dna: DNA;
   private readonly initialMass: number; // TODO: improve calculation logic
-  private readonly ration: string[]; // TODO: Get rid of inspection notification
   private readonly metabolismRatio: number; // TODO: find some elegant approach
 
   // TODO: Find some better name for this method and refactor it
@@ -60,26 +63,13 @@ export class Bacterium {
   }
 
   private getChild(): Bacterium {
-    return new Bacterium({
-      ration: this.ration,
-      metabolismRatio: this.metabolismRatio,
-      resources: this.resources.map((resource) => resource.getPortion()), // TODO: improve logic
-      dna: this.dna
-    });
-  }
+    const { resources, dna } = this;
 
-  private static get PROPERTIES(): { [id: string]: (gene: string) => any; } {
-    return {
-      initialMass: (dna) => dna.charCodeAt(0) / 10
-    };
+    return new Bacterium(
+      resources.map((resource) => resource.getPortion()), // TODO: improve logic
+      dna.clone()
+    );
   }
-}
-
-interface IBacteriumSettings {
-  resources: Resource[];
-  ration: string[];
-  metabolismRatio: number;
-  dna: string;
 }
 
 interface IBacteriumOutput {
