@@ -1,7 +1,7 @@
 import { Resource } from './Resource';
 import { Bacterium } from './Bacterium';
 
-export class Environment {
+export class Environment { // TODO: ADD CAPACITY PROPERTY AND RESOURCE DISTRIBUTION LOGIC
   constructor(settings: IEnvironmentSettings) {
     Object.assign(this, settings);
   }
@@ -49,7 +49,9 @@ export class Environment {
       }
     }
 
-    requestAnimationFrame(this.nextIteration.bind(this));
+    if (this.bacteria.length > 0) {
+      requestAnimationFrame(this.nextIteration.bind(this));
+    }
   }
 }
 
