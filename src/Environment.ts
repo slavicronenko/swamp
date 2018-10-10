@@ -22,6 +22,7 @@ export class Environment { // TODO: ADD CAPACITY PROPERTY AND RESOURCE DISTRIBUT
   }
 
   // TODO: Add resource rareness logic (chance not to get some resources)
+  // TODO: improve resource distribution logic
   public getSomeResources(): Resource[] {
     return this.resources.map((resource: Resource) => resource.getPortion());
   }
@@ -48,6 +49,8 @@ export class Environment { // TODO: ADD CAPACITY PROPERTY AND RESOURCE DISTRIBUT
         this.bacteria.push(...children);
       }
     }
+
+    console.log(this.bacteria.length);
 
     if (this.bacteria.length > 0) {
       requestAnimationFrame(this.nextIteration.bind(this));

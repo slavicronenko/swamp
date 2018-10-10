@@ -1,32 +1,27 @@
 import { Resource } from './Resource';
 import { DNA } from './DNA';
+import { chance } from './Helper';
 
 export class Bacterium {
   constructor(resources: Resource[], dna: DNA = new DNA()) {
-    const {
-      a,
-      z,
-      g: initialMass,
-    } = dna.getGenes(); // TODO: this logic should be unified and encapsulated in some method
     this.resources = resources;
     this.dna = dna;
 
-    Object.assign(this, {
-      initialMass,
-      metabolismRatio: a + (z / 2)
-    });
+    Object.assign(this, this.dna.getCode());
   }
 
   private readonly resources: Resource[];
   private readonly dna: DNA;
-  private readonly initialMass: number; // TODO: improve calculation logic
-  private readonly metabolismRatio: number; // TODO: find some elegant approach
+  private readonly mitosisProbability: number;
+  private readonly degradation: number;
+  private readonly metabolism: number;
+  private age: number = 0;
 
   // TODO: Find some better name for this method and refactor it
   public lifeCycleIteration(resources: Resource[]): IBacteriumOutput {
-    let currentMass = 0;
     let isAlive = true;
     const children = [];
+    const consumption = this.metabolism + this.age * this.degradation;
 
     for (const ownResource of this.resources) {
       const sameResource = resources.find((resource) => resource.name === ownResource.name);
@@ -35,19 +30,19 @@ export class Bacterium {
         ownResource.merge(sameResource);
       }
 
-      isAlive = ownResource.spend(this.metabolismRatio);
+      isAlive = ownResource.spend(consumption);
 
       if (!isAlive) {
         break;
       }
-
-      currentMass += ownResource.getAmount();
     }
 
-    if (currentMass > this.initialMass * 2) { // TODO: find better condition
+    if (chance(this.mitosisProbability)) {
       isAlive = false;
       children.push(...this.mitosis());
     }
+
+    this.age += 1;
 
     return {
       isAlive,

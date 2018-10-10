@@ -1,42 +1,51 @@
-import { countSubstrings, generateString } from './Helper';
+import { Gene } from './Gene';
 
+// TODO: add mutation logic
 export class DNA {
-  constructor(code: string = generateString(DNA.DEFAULT_LENGTH, DNA.DEFAULT_CHARS)) {
-    this.genes = countSubstrings(code, DNA.USEFUL_GENES);
+  constructor(genes: Gene[] = DNA.DEFAULT_GENES, code?: ICode) {
+    this.genes = genes;
+    this.code = code || this.encode();
   }
 
-  private readonly code: string;
-  private readonly genes: IGenes;
+  private readonly code: ICode;
+  private readonly genes: Gene[];
 
-  public getCode(): string {
-    return this.code;
+  public encode(): ICode {
+    return this.genes.reduce((code, gene) => Object.assign(code, { [gene.name]: gene.generateValue() }), {});
   }
 
-  public getGenes(): IGenes {
-    return Object.assign({}, this.genes);
+  public getCode(): ICode {
+    return Object.assign({}, this.code);
   }
 
   public clone() {
-    return new DNA(this.code);  // TODO: might cause performance issues due to recalculation genes
+    return new DNA(this.genes.slice(), Object.assign({}, this.code));
   }
 
-  private static get USEFUL_GENES(): string[] {
+  private static get DEFAULT_GENES(): Gene[] {
     return [
-      'a',
-      'g',
-      'z'
+      new Gene({
+        name: 'mitosisProbability',
+        minValue: 0.01,
+        maxValue: 1.75,
+        precision: 2
+      }),
+      new Gene({
+        name: 'degradation',
+        minValue: 0.05,
+        maxValue: 0.5,
+        precision: 2
+      }),
+      new Gene({
+        name: 'metabolism',
+        minValue: 0.1,
+        maxValue: 0.5,
+        precision: 2
+      })
     ];
-  }
-
-  private static get DEFAULT_CHARS(): string {
-    return 'abcdefghijklmnopqrstuvwxyz';
-  }
-
-  private static get DEFAULT_LENGTH(): number {
-    return 130;
   }
 }
 
-interface IGenes {
-  [index: string]: number;
+interface ICode {
+  [id: string]: number;
 }
