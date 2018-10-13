@@ -2,6 +2,7 @@ import { Environment } from './Environment';
 import { Resource } from './Resource';
 import { Bacterium } from './Bacterium';
 import { random } from './Helper';
+import { PopulationChart } from './charts/PopulationChart';
 
 const NUMBER_OF_BACTERIA = 100;
 
@@ -31,3 +32,7 @@ const env = new Environment({
 
 env.live();
 (window as any).env = env;
+
+(window as any).charts = [
+  new PopulationChart()
+];
