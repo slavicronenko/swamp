@@ -1,8 +1,8 @@
-import { Gene } from './Gene';
+import { Gene } from './gene';
 
 // TODO: add mutation logic
-export class DNA {
-  constructor(genes: Gene[] = DNA.DEFAULT_GENES, code?: ICode) {
+export class Dna {
+  constructor(genes: Gene[] = Dna.DEFAULT_GENES, code?: ICode) {
     this.genes = genes;
     this.code = code || this.encode();
   }
@@ -19,7 +19,7 @@ export class DNA {
   }
 
   public clone() {
-    return new DNA(this.genes.slice(), Object.assign({}, this.code));
+    return new Dna(this.genes.slice(), Object.assign({}, this.code));
   }
 
   private static get DEFAULT_GENES(): Gene[] {

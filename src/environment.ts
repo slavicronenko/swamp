@@ -1,5 +1,5 @@
-import { Resource } from './Resource';
-import { Bacterium } from './Bacterium';
+import { Resource } from './resource';
+import { Bacterium } from './bacterium';
 
 export class Environment { // TODO: ADD CAPACITY PROPERTY AND RESOURCE DISTRIBUTION LOGIC
   constructor(settings: IEnvironmentSettings) {

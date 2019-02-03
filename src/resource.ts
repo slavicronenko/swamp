@@ -1,4 +1,4 @@
-import { generateString, isNumber, random } from './Helper';
+import { generateString, isNumber, random } from './helper';
 
 export class Resource {
   constructor(settings: IResourceSettings = Resource.GENERATE_SETTINGS()) {

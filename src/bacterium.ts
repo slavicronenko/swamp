@@ -1,9 +1,9 @@
-import { Resource } from './Resource';
-import { DNA } from './DNA';
-import { chance } from './Helper';
+import { Resource } from './resource';
+import { Dna } from './dna';
+import { chance } from './helper';
 
 export class Bacterium {
-  constructor(resources: Resource[], dna: DNA = new DNA()) {
+  constructor(resources: Resource[], dna: Dna = new Dna()) {
     this.resources = resources;
     this.dna = dna;
 
@@ -11,7 +11,7 @@ export class Bacterium {
   }
 
   private readonly resources: Resource[];
-  private readonly dna: DNA;
+  private readonly dna: Dna;
   private readonly mitosisProbability: number;
   private readonly degradation: number;
   private readonly metabolism: number;

@@ -1,4 +1,4 @@
-import { random } from './Helper';
+import { random } from './helper';
 
 export class Gene {
   constructor(settings: IGeneSettings) {

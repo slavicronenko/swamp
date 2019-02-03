@@ -1,7 +1,7 @@
-import { Environment } from './Environment';
-import { Resource } from './Resource';
-import { Bacterium } from './Bacterium';
-import { random } from './Helper';
+import { Environment } from './environment';
+import { Resource } from './resource';
+import { Bacterium } from './bacterium';
+import { random } from './helper';
 import { PopulationChart } from './charts/PopulationChart';
 
 const NUMBER_OF_BACTERIA = 100;
