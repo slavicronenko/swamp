@@ -4,9 +4,13 @@ import { Bacterium } from './bacterium';
 export class View {
   constructor(id: string) {
     this.canvasElement = document.getElementById(id) as HTMLCanvasElement;
+    const { width, height } = this.canvasElement;
+
+    this.canvasElement.style.width = `${width}px`;
+    this.canvasElement.style.height = `${height}px`;
+    this.canvasElement.width = this.width = width * window.devicePixelRatio;
+    this.canvasElement.height = this.height = height * window.devicePixelRatio;
     this.context = this.canvasElement.getContext('2d');
-    this.width = this.canvasElement.width;
-    this.height = this.canvasElement.height;
   }
 
   public canvasElement: HTMLCanvasElement;
@@ -43,7 +47,7 @@ export class View {
     for (let i = 0; i < length; i += 1) {
       const [x, y] = bacteria[i].coordinates;
 
-      this.context.fillRect(x, y, 1, 1);
+      this.context.fillRect(x, y, 3, 3);
     }
   }
 }
