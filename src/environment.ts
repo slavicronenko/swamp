@@ -1,25 +1,23 @@
 import { Resource } from './resource';
 import { Bacterium } from './bacterium';
+import { random } from './helper';
 
 export class Environment { // TODO: ADD CAPACITY PROPERTY AND RESOURCE DISTRIBUTION LOGIC
   constructor(settings: IEnvironmentSettings) {
-    Object.assign(this, settings);
+    Object.assign(this, {
+      ...Environment.DEFAULT_PROPERTIES,
+      ...settings
+    });
+
+    this.initCoordinates();
   }
 
-  private paused: boolean = true;
+  public width: number;
+  public height: number;
+
   private readonly resources: Resource[];  // TODO: Get rid of inspection notification
   private readonly bacteria: Bacterium[];
-
-  public live(): void {
-    if (this.paused) {
-      this.paused = false;
-      requestAnimationFrame(this.nextIteration.bind(this));
-    }
-  }
-
-  public pause() {
-    this.paused = true;
-  }
+  private coordinates: Set<string>;
 
   // TODO: Add resource rareness logic (chance not to get some resources)
   // TODO: improve resource distribution logic
@@ -27,38 +25,49 @@ export class Environment { // TODO: ADD CAPACITY PROPERTY AND RESOURCE DISTRIBUT
     return this.resources.map((resource: Resource) => resource.getPortion());
   }
 
-  private nextIteration(): void {
-    if (this.paused) {
-      return;
-    }
+  public getSnapshot(timePassedMs: number): ISnapshot {
+    return { bacteria: this.bacteria };
+  }
 
-    // Can't use filter here, we need the same array, not a new one
-    for (let i = 0; i < this.bacteria.length; i += 1) {
-      const {
-        isAlive,
-        children
-      } = this.bacteria[i].lifeCycleIteration(this.getSomeResources());
+  private initCoordinates(): void {
+    this.coordinates = new Set();
+    const length = this.bacteria.length;
 
-      if (!isAlive) {
-        this.bacteria.splice(i, 1);
+    for (let i = 0; i < length; i += 1) {
+      let newCoordinates;
+      let x;
+      let y;
 
-        i -= 1;
+      while (!newCoordinates || this.coordinates.has(newCoordinates)) {
+        x = random(0, this.width);
+        y = random(0, this.height);
+        newCoordinates = `${x}:${y}`;
       }
 
-      if (children.length) {
-        this.bacteria.push(...children);
-      }
+      this.bacteria[i].coordinates = [x, y];
+      this.coordinates.add(newCoordinates);
     }
+  }
 
-    console.log(this.bacteria.length);
-
-    if (this.bacteria.length > 0) {
-      requestAnimationFrame(this.nextIteration.bind(this));
-    }
+  private static DEFAULT_PROPERTIES(): IEnvironmentSettings {
+    return {
+      width: 400,
+      height: 400,
+      resources: [],
+      bacteria: []
+    };
   }
 }
 
+interface ICoordinatesMap { [key: string]: Bacterium[]; }
+
 interface IEnvironmentSettings {
+  width: number;
+  height: number;
   resources: Resource[];
+  bacteria: Bacterium[];
+}
+
+export interface ISnapshot {
   bacteria: Bacterium[];
 }

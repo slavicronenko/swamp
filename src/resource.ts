@@ -8,15 +8,13 @@ export class Resource {
 
   public readonly name: string;
 
+  public coordinates: number[];
+
   private readonly initialSettings: IResourceSettings;
   private readonly minPortion: number | null;
   private readonly maxPortion: number | null;
   private readonly precision: number = 0;
   private amount: number = Number.POSITIVE_INFINITY;
-
-  public getAmount(): number {
-    return this.amount;
-  }
 
   public getPortion(): Resource {
     const {
@@ -38,7 +36,7 @@ export class Resource {
     this.amount = amount - portion;
 
     return new Resource({
-      name: name,
+      name,
       precision,
       minPortion,
       maxPortion,

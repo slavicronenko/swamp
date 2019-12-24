@@ -10,6 +10,8 @@ export class Bacterium {
     Object.assign(this, this.dna.getCode());
   }
 
+  public coordinates?: number[];
+
   private readonly resources: Resource[];
   private readonly dna: Dna;
   private readonly mitosisProbability: number;

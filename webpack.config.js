@@ -10,10 +10,18 @@ module.exports = {
     filename: 'bundle.js'
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx']
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.css']
   },
   module: {
     rules: [
+      {
+        test: /\.html$/,
+        loader: "raw-loader"
+      },
+      {
+        test:/\.css$/,
+        use:['style-loader','css-loader']
+      },
       {
         test: /\.ts$/,
         enforce: 'pre',

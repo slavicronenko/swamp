@@ -1,8 +1,9 @@
+import './style';
 import { Environment } from './environment';
 import { Resource } from './resource';
 import { Bacterium } from './bacterium';
 import { random } from './helper';
-import { PopulationChart } from './charts/PopulationChart';
+import { View } from './view';
 
 const NUMBER_OF_BACTERIA = 100;
 
@@ -24,15 +25,14 @@ const bacteria = Array(NUMBER_OF_BACTERIA)
     return new Bacterium(startingResources);
   });
 
-
+const view = new View('view');
 const env = new Environment({
+  width: view.width,
+  height: view.height,
   resources,
   bacteria
 });
 
-env.live();
+view.setEnvironment(env);
+view.live();
 (window as any).env = env;
-
-(window as any).charts = [
-  new PopulationChart()
-];
