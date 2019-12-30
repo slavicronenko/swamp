@@ -1,5 +1,5 @@
 import { Resource } from './resource';
-import { Bacterium } from './bacterium';
+import { Organism } from './organism';
 import { random } from './helper';
 
 export class Environment { // TODO: ADD CAPACITY PROPERTY AND RESOURCE DISTRIBUTION LOGIC
@@ -15,23 +15,23 @@ export class Environment { // TODO: ADD CAPACITY PROPERTY AND RESOURCE DISTRIBUT
   public width: number;
   public height: number;
 
-  private readonly resources: Resource[];  // TODO: Get rid of inspection notification
-  private readonly bacteria: Bacterium[];
+  private readonly resources: Array<Resource>;  // TODO: Get rid of inspection notification
+  private readonly organisms: Array<Organism>;
   private coordinates: Set<string>;
 
   // TODO: Add resource rareness logic (chance not to get some resources)
   // TODO: improve resource distribution logic
-  public getSomeResources(): Resource[] {
+  public getSomeResources(): Array<Resource> {
     return this.resources.map((resource: Resource) => resource.getPortion());
   }
 
   public getSnapshot(timePassedMs: number): ISnapshot {
-    return { bacteria: this.bacteria };
+    return { organisms: this.organisms };
   }
 
   private initCoordinates(): void {
     this.coordinates = new Set();
-    const length = this.bacteria.length;
+    const length = this.organisms.length;
 
     for (let i = 0; i < length; i += 1) {
       let newCoordinates;
@@ -44,7 +44,7 @@ export class Environment { // TODO: ADD CAPACITY PROPERTY AND RESOURCE DISTRIBUT
         newCoordinates = `${x}:${y}`;
       }
 
-      this.bacteria[i].coordinates = [x, y];
+      this.organisms[i].coordinates = [x, y];
       this.coordinates.add(newCoordinates);
     }
   }
@@ -54,20 +54,20 @@ export class Environment { // TODO: ADD CAPACITY PROPERTY AND RESOURCE DISTRIBUT
       width: 400,
       height: 400,
       resources: [],
-      bacteria: []
+      organisms: []
     };
   }
 }
 
-interface ICoordinatesMap { [key: string]: Bacterium[]; }
+interface ICoordinatesMap { [key: string]: Array<Organism>; }
 
 interface IEnvironmentSettings {
   width: number;
   height: number;
-  resources: Resource[];
-  bacteria: Bacterium[];
+  resources: Array<Resource>;
+  organisms: Array<Organism>;
 }
 
 export interface ISnapshot {
-  bacteria: Bacterium[];
+  organisms: Array<Organism>;
 }

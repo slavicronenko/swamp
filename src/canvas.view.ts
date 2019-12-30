@@ -1,7 +1,7 @@
 import { Environment } from './environment';
-import { Bacterium } from './bacterium';
+import { Organism } from './organism';
 
-export class View {
+export class CanvasView {
   constructor(id: string) {
     this.canvasElement = document.getElementById(id) as HTMLCanvasElement;
     const { width, height } = this.canvasElement;
@@ -29,10 +29,10 @@ export class View {
   }
 
   private frame(): void {
-    const { bacteria } = this.environment.getSnapshot(0);
+    const { organisms } = this.environment.getSnapshot(0);
 
     this.clear();
-    this.drawBacteria(bacteria);
+    this.drawOrganism(organisms);
 
     requestAnimationFrame(this.frame.bind(this));
   }
@@ -41,11 +41,11 @@ export class View {
     this.context.clearRect(0, 0, this.width, this.height);
   }
 
-  private drawBacteria(bacteria: Bacterium[]): void {
-    const length = bacteria.length;
+  private drawOrganism(organisms: Array<Organism>): void {
+    const length = organisms.length;
 
     for (let i = 0; i < length; i += 1) {
-      const [x, y] = bacteria[i].coordinates;
+      const [x, y] = organisms[i].coordinates;
 
       this.context.fillRect(x, y, 3, 3);
     }

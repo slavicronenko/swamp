@@ -1,11 +1,11 @@
 import './style';
 import { Environment } from './environment';
 import { Resource } from './resource';
-import { Bacterium } from './bacterium';
+import { Organism } from './organism';
 import { random } from './helper';
-import { View } from './view';
+import { CanvasView } from './canvas.view';
 
-const NUMBER_OF_BACTERIA = 100;
+const NUMBER_OF_ORGANISMS = 100;
 
 const resources = [
   new Resource({
@@ -15,22 +15,22 @@ const resources = [
     precision: 1
   })
 ];
-const bacteria = Array(NUMBER_OF_BACTERIA)
+const organisms = Array(NUMBER_OF_ORGANISMS)
   .fill(null)
   .map(() => {
     const startingResources = resources.map((resource) =>
       resource.clone({ amount: random(5, 10) })
     );
 
-    return new Bacterium(startingResources);
+    return new Organism(startingResources);
   });
 
-const view = new View('view');
+const view = new CanvasView('view');
 const env = new Environment({
   width: view.width,
   height: view.height,
   resources,
-  bacteria
+  organisms
 });
 
 view.setEnvironment(env);

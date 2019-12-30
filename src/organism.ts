@@ -2,17 +2,17 @@ import { Resource } from './resource';
 import { Dna } from './dna';
 import { chance } from './helper';
 
-export class Bacterium {
-  constructor(resources: Resource[], dna: Dna = new Dna()) {
+export class Organism {
+  constructor(resources: Array<Resource>, dna: Dna = new Dna()) {
     this.resources = resources;
     this.dna = dna;
 
     Object.assign(this, this.dna.getCode());
   }
 
-  public coordinates?: number[];
+  public coordinates?: Array<number>;
 
-  private readonly resources: Resource[];
+  private readonly resources: Array<Resource>;
   private readonly dna: Dna;
   private readonly mitosisProbability: number;
   private readonly degradation: number;
@@ -20,7 +20,7 @@ export class Bacterium {
   private age: number = 0;
 
   // TODO: Find some better name for this method and refactor it
-  public lifeCycleIteration(resources: Resource[]): IBacteriumOutput {
+  public lifeCycleIteration(resources: Array<Resource>): IOrganismOutput {
     let isAlive = true;
     const children = [];
     const consumption = this.metabolism + this.age * this.degradation;
@@ -52,24 +52,24 @@ export class Bacterium {
     };
   }
 
-  private mitosis(): Bacterium[] {
+  private mitosis(): Array<Organism> {
     return [
       this.getChild(),
       this.getChild()
     ];
   }
 
-  private getChild(): Bacterium {
+  private getChild(): Organism {
     const { resources, dna } = this;
 
-    return new Bacterium(
+    return new Organism(
       resources.map((resource) => resource.getPortion()), // TODO: improve logic
       dna.clone()
     );
   }
 }
 
-interface IBacteriumOutput {
+interface IOrganismOutput {
   isAlive: boolean;
-  children: Bacterium[];
+  children: Array<Organism>;
 }

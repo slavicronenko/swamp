@@ -14,7 +14,8 @@
     "ordered-imports": false,
     "trailing-comma": false,
     "object-literal-sort-keys": false,
-    "member-ordering": false
+    "member-ordering": false,
+    "array-type": [true, "generic"]
   },
   "jsRules": {
     "max-line-length": {
