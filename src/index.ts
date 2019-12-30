@@ -3,7 +3,7 @@ import { Environment } from './environment';
 import { Resource } from './resource';
 import { Organism } from './organism';
 import { random } from './helper';
-import { CanvasView } from './canvas.view';
+import { CanvasView } from './view/canvas.view';
 
 const NUMBER_OF_ORGANISMS = 100;
 
@@ -25,14 +25,11 @@ const organisms = Array(NUMBER_OF_ORGANISMS)
     return new Organism(startingResources);
   });
 
-const view = new CanvasView('view');
 const env = new Environment({
-  width: view.width,
-  height: view.height,
   resources,
   organisms
 });
+const view = new CanvasView('view', env);
 
-view.setEnvironment(env);
 view.live();
 (window as any).env = env;

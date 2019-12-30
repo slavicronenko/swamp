@@ -24,7 +24,7 @@ export class Organism {
     const consumption = this.metabolism + this.age * this.degradation;
 
     for (const ownResource of this.resources) {
-      const sameResource = resources.find((resource) => resource.name === ownResource.name);
+      const sameResource = resources.find(resource => resource.name === ownResource.name);
 
       if (sameResource) {
         ownResource.merge(sameResource);
@@ -61,7 +61,7 @@ export class Organism {
     const { resources, dna } = this;
 
     return new Organism(
-      resources.map((resource) => resource.getPortion()), // TODO: improve logic
+      resources.map(resource => resource.getPortion()), // TODO: improve logic
       dna.clone()
     );
   }

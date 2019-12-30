@@ -2,13 +2,13 @@ import { Gene } from './gene';
 
 // TODO: add mutation logic
 export class Dna {
-  constructor(genes: Gene[] = Dna.DEFAULT_GENES, code?: ICode) {
+  constructor(genes: Array<Gene> = Dna.DEFAULT_GENES, code?: ICode) {
     this.genes = genes;
     this.code = code || this.encode();
   }
 
   private readonly code: ICode;
-  private readonly genes: Gene[];
+  private readonly genes: Array<Gene>;
 
   public encode(): ICode {
     return this.genes.reduce((code, gene) => Object.assign(code, { [gene.name]: gene.generateValue() }), {});
@@ -22,7 +22,7 @@ export class Dna {
     return new Dna(this.genes.slice(), Object.assign({}, this.code));
   }
 
-  private static get DEFAULT_GENES(): Gene[] {
+  private static get DEFAULT_GENES(): Array<Gene> {
     return [
       new Gene({
         name: 'mitosisProbability',

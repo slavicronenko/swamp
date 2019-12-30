@@ -8,7 +8,7 @@ export class Resource {
 
   public readonly name: string;
 
-  public coordinates: number[];
+  public coordinates: Array<number>;
 
   private readonly initialSettings: IResourceSettings;
   private readonly minPortion: number | null;
@@ -44,7 +44,7 @@ export class Resource {
     });
   }
 
-  public merge(...resources: Resource[]): Resource {
+  public merge(...resources: Array<Resource>): Resource {
     resources.forEach((resource: Resource) => {
       if (this.name === resource.name) {
         this.amount += resource.amount;

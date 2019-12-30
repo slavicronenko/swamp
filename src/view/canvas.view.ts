@@ -1,8 +1,9 @@
-import { Environment } from './environment';
-import { Organism } from './organism';
+import { IDrawable, IEnvironment, IView } from '../interfaces';
+import { OrganismView } from './organism.view';
+import { random } from '../helper';
 
-export class CanvasView {
-  constructor(id: string) {
+export class CanvasView implements IView  {
+  constructor(id: string, environment: IEnvironment) {
     this.canvasElement = document.getElementById(id) as HTMLCanvasElement;
     const { width, height } = this.canvasElement;
 
@@ -11,6 +12,8 @@ export class CanvasView {
     this.canvasElement.width = this.width = width * window.devicePixelRatio;
     this.canvasElement.height = this.height = height * window.devicePixelRatio;
     this.context = this.canvasElement.getContext('2d');
+    this.environment = environment;
+    this.drawables = new WeakMap();
   }
 
   public canvasElement: HTMLCanvasElement;
@@ -18,11 +21,8 @@ export class CanvasView {
   public width: number;
   public height: number;
 
-  private environment: Environment;
-
-  public setEnvironment(environment: Environment): void {
-    this.environment = environment;
-  }
+  private environment: IEnvironment;
+  private drawables: WeakMap<any, IDrawable>;
 
   public live(): void {
     requestAnimationFrame(this.frame.bind(this));
@@ -30,9 +30,23 @@ export class CanvasView {
 
   private frame(): void {
     const { organisms } = this.environment.getSnapshot(0);
+    const items = [...organisms];
+    const length = items.length;
 
     this.clear();
-    this.drawOrganism(organisms);
+
+    for (let i = 0; i < length; i += 1) {
+      let drawable = this.drawables.get(items[i]);
+
+      if (!drawable) {
+        const [x, y] = this.getRandomCoordinates();
+
+        drawable = new OrganismView(items[i], x, y);
+        this.drawables.set(items[i], drawable);
+      }
+
+      drawable.draw(this.context);
+    }
 
     requestAnimationFrame(this.frame.bind(this));
   }
@@ -41,13 +55,7 @@ export class CanvasView {
     this.context.clearRect(0, 0, this.width, this.height);
   }
 
-  private drawOrganism(organisms: Array<Organism>): void {
-    const length = organisms.length;
-
-    for (let i = 0; i < length; i += 1) {
-      const [x, y] = organisms[i].coordinates;
-
-      this.context.fillRect(x, y, 3, 3);
-    }
+  private getRandomCoordinates(): Array<number> {
+    return [random(0, this.width), random(0, this.height)];
   }
 }
