@@ -10,8 +10,6 @@ export class Organism {
     Object.assign(this, this.dna.getCode());
   }
 
-  public coordinates?: Array<number>;
-
   private readonly resources: Array<Resource>;
   private readonly dna: Dna;
   private readonly mitosisProbability: number;
