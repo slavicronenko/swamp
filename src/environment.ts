@@ -17,7 +17,6 @@ export class Environment implements IEnvironment {
 
   private static DEFAULT_PROPERTIES(): IEnvironmentSettings {
     return {
-      resources: [],
       organisms: []
     };
   }

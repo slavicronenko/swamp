@@ -1,4 +1,3 @@
-import { Resource } from './resource';
 import { Organism } from './organism';
 
 export interface IView {
@@ -10,7 +9,6 @@ export interface IEnvironment {
 }
 
 export interface IEnvironmentSettings {
-  resources: Array<Resource>;
   organisms: Array<Organism>;
 }
 

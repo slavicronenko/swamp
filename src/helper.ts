@@ -29,7 +29,7 @@ export function chance(chancePercent: number = 50, precision: number = 0): boole
   return random(0, 100, precision) < chancePercent;
 }
 
-export function countSubstrings(str: string, subStrs: string[]): { [id: string]: number } {
+export function countSubstrings(str: string, subStrs: Array<string>): { [id: string]: number } {
   const result = {};
   const strLength = str.length;
 
