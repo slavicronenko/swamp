@@ -1,4 +1,4 @@
-import { generateString, isNumber, random } from './helper';
+import { getRandomString, isNumber, random } from './helper';
 
 export class Resource {
   constructor(settings: IResourceSettings = Resource.GENERATE_SETTINGS()) {
@@ -72,7 +72,7 @@ export class Resource {
     const precision = random(0, 2);
 
     return {
-      name: generateString(),
+      name: getRandomString(),
       precision,
       minPortion: random(0, 1, precision),
       maxPortion: random(1, 3, precision)

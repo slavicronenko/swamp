@@ -1,12 +1,27 @@
 export function random(min: number = 0, max: number = Number.MAX_SAFE_INTEGER, precision: number = 0): number {
-  return +(Math.random() * (max - min) + min).toFixed(precision);
+  return precision ? randomFloat(min, max, precision) : randomInt(min, max);
 }
 
-export function generateString(size: number = 6, chars: string = 'abcdefghijklmnopqrstuvwxyz'): string {
+export function randomInt(min: number = 0, max: number = Number.MAX_SAFE_INTEGER): number {
+  const a = Math.floor(max);
+  const b = Math.ceil(min);
+
+  return Math.floor(Math.random() * (a - b + 1)) + b;
+}
+
+export function randomFloat(min: number = 0, max: number = Number.MAX_SAFE_INTEGER, precision: number = 0): number {
+  return Number.parseFloat((Math.random() * (max - min) + min).toFixed(precision));
+}
+
+export function getRandomString(size: number = 6, chars: string = 'abcdefghijklmnopqrstuvwxyz'): string {
   return Array(size)
     .fill(null)
     .map(() => chars[random(0, chars.length - 1)])
     .join('');
+}
+
+export function getRandomColor(): string {
+  return `#${getRandomString(6, '0123456789abcdef')}`;
 }
 
 export function isFunction(entity: any) {
@@ -48,4 +63,8 @@ export function countSubstrings(str: string, subStrs: Array<string>): { [id: str
   }
 
   return result;
+}
+
+export function noop(...params: Array<any>): undefined {
+  return undefined;
 }
