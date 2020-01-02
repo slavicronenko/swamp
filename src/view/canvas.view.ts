@@ -1,6 +1,6 @@
 import { IDrawable, IEnvironment, IView } from '../interfaces';
 import { OrganismView } from './organism.view';
-import { random } from '../helper';
+import { isFunction, random } from '../helper';
 
 export class CanvasView implements IView  {
   constructor(id: string, environment: IEnvironment) {
@@ -41,8 +41,12 @@ export class CanvasView implements IView  {
       if (!drawable) {
         const [x, y] = this.getRandomCoordinates();
 
-        drawable = new OrganismView(items[i], x, y);
+        drawable = new OrganismView(x, y);
         this.drawables.set(items[i], drawable);
+      }
+
+      if (isFunction(drawable.updatePosition)) {
+        drawable.updatePosition(this.width, this.height);
       }
 
       drawable.draw(this.context);

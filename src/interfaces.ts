@@ -18,4 +18,5 @@ export interface ISnapshot {
 
 export interface IDrawable {
   draw(context: CanvasRenderingContext2D): void;
+  updatePosition?(maxX: number, maxY: number): void;
 }
