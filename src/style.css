@@ -3,3 +3,9 @@ canvas {
   margin: 0 auto;
   border: 1px solid #ccc;
 }
+
+.fps {
+  display: inline-block;
+  padding: 12px 6px;
+  border: 1px solid #ccc;
+}

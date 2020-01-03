@@ -1,4 +1,4 @@
-import { IDrawable, IEnvironment, IView } from '../interfaces';
+import { EventHandler, IDrawable, IEnvironment, IView } from '../interfaces';
 import { OrganismView } from './organism.view';
 import { isFunction, random } from '../helper';
 
@@ -23,13 +23,17 @@ export class CanvasView implements IView  {
 
   private environment: IEnvironment;
   private drawables: WeakMap<any, IDrawable>;
+  private lastUpdate: number;
+  private eventMap: { [key: string]: Array<EventHandler> } = {};
 
   public live(): void {
     requestAnimationFrame(this.frame.bind(this));
   }
 
   private frame(): void {
-    const { organisms } = this.environment.getSnapshot(0);
+    const timePassed = this.lastUpdate ? Date.now() - this.lastUpdate : 0;
+    this.dispatchEvent('fps', (1000 / timePassed).toFixed(0));
+    const { organisms } = this.environment.getSnapshot(timePassed);
     const items = [...organisms];
     const length = items.length;
 
@@ -52,7 +56,20 @@ export class CanvasView implements IView  {
       drawable.draw(this.context);
     }
 
+    this.lastUpdate = Date.now();
     requestAnimationFrame(this.frame.bind(this));
+  }
+
+  public addEventListener(type: string, handler: EventHandler): void {
+    if (!this.eventMap[type]) {
+      this.eventMap[type] = [];
+    }
+
+    this.eventMap[type].push(handler);
+  }
+
+  public dispatchEvent(type: string, value?: any): void {
+    this.eventMap[type].forEach(handler => handler(value));
   }
 
   private clear(): void {

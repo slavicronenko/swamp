@@ -5,6 +5,7 @@ import { Organism } from './organism';
 import { random } from './helper';
 import { CanvasView } from './view/canvas.view';
 
+const fps = document.getElementById('fps');
 const NUMBER_OF_ORGANISMS = 100;
 
 const organisms = Array(NUMBER_OF_ORGANISMS)
@@ -16,3 +17,5 @@ const view = new CanvasView('view', env);
 
 view.live();
 (window as any).env = env;
+
+view.addEventListener('fps', value => fps.innerText = `FPS: ${value}`);
