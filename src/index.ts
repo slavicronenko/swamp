@@ -4,6 +4,7 @@ import { Organism } from './lib/organism';
 import { CanvasView } from './view/canvas.view';
 import { Gene } from './lib/gene';
 import { Dna } from './lib/dna';
+import { getRandomColor } from './helper';
 
 const fps = document.getElementById('fps');
 const NUMBER_OF_ORGANISMS = 100;
@@ -13,6 +14,11 @@ const genes = [
     name: 'size',
     minValue: 1,
     maxValue: 3
+  }),
+  new Gene({
+    name: 'color',
+    stable: true,
+    generator: getRandomColor
   })
 ];
 

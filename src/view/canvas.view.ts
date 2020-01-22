@@ -3,6 +3,7 @@ import { OrganismView } from './organism.view';
 import { isFunction, random } from '../helper';
 import { Environment } from '../lib/environment';
 
+// TODO: improve performance
 export class CanvasView {
   constructor(id: string, environment: Environment) {
     this.canvasElement = document.getElementById(id) as HTMLCanvasElement;

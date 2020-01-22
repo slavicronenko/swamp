@@ -7,7 +7,7 @@ export class OrganismView implements IDrawable {
     public x: number,
     public y: number
   ) {
-    this.color = getRandomColor();
+    this.color = organism.color;
     this.size = organism.size;
   }
 
