@@ -1,9 +1,10 @@
-import { EventHandler, IDrawable, IEnvironment, IView } from '../interfaces';
+import { ActualOrganism, EventHandler, IDrawable } from './interfaces';
 import { OrganismView } from './organism.view';
 import { isFunction, random } from '../helper';
+import { Environment } from '../lib/environment';
 
-export class CanvasView implements IView  {
-  constructor(id: string, environment: IEnvironment) {
+export class CanvasView {
+  constructor(id: string, environment: Environment) {
     this.canvasElement = document.getElementById(id) as HTMLCanvasElement;
     const { width, height } = this.canvasElement;
 
@@ -13,7 +14,7 @@ export class CanvasView implements IView  {
     this.canvasElement.height = this.height = height * window.devicePixelRatio;
     this.context = this.canvasElement.getContext('2d');
     this.environment = environment;
-    this.drawables = new WeakMap();
+    this.sceneObjects = new WeakMap();
   }
 
   public canvasElement: HTMLCanvasElement;
@@ -21,9 +22,9 @@ export class CanvasView implements IView  {
   public width: number;
   public height: number;
 
-  private environment: IEnvironment;
-  private drawables: WeakMap<any, IDrawable>;
-  private lastUpdate: number;
+  private environment: Environment;
+  private sceneObjects: WeakMap<any, IDrawable>;
+  private lastUpdate: number = 0;
   private eventMap: { [key: string]: Array<EventHandler> } = {};
 
   public live(): void {
@@ -33,23 +34,23 @@ export class CanvasView implements IView  {
   private frame(): void {
     const timePassed = this.lastUpdate ? Date.now() - this.lastUpdate : 0;
     this.dispatchEvent('fps', (1000 / timePassed).toFixed(0));
-    const { organisms } = this.environment.getSnapshot(timePassed);
+    const { organisms } = this.environment.getSnapshot<ActualOrganism>(timePassed);
     const items = [...organisms];
     const length = items.length;
 
     this.clear();
 
     for (let i = 0; i < length; i += 1) {
-      let drawable = this.drawables.get(items[i]);
+      let drawable = this.sceneObjects.get(items[i]);
 
       if (!drawable) {
         const [x, y] = this.getRandomCoordinates();
 
-        drawable = new OrganismView(x, y);
-        this.drawables.set(items[i], drawable);
+        drawable = new OrganismView(items[i], x, y);
+        this.sceneObjects.set(items[i], drawable);
       }
 
-      if (isFunction(drawable.updatePosition)) {
+      if (drawable.updatePosition && isFunction(drawable.updatePosition)) {
         drawable.updatePosition(this.width, this.height);
       }
 

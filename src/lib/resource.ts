@@ -1,4 +1,4 @@
-import { getRandomString, isNumber, random } from './helper';
+import { getRandomString, isNumber, random } from '../helper';
 
 export class Resource {
   constructor(settings: IResourceSettings = Resource.GENERATE_SETTINGS()) {
@@ -8,11 +8,9 @@ export class Resource {
 
   public readonly name: string;
 
-  public coordinates: Array<number>;
-
   private readonly initialSettings: IResourceSettings;
-  private readonly minPortion: number | null;
-  private readonly maxPortion: number | null;
+  private readonly minPortion: number;
+  private readonly maxPortion: number;
   private readonly precision: number = 0;
   private amount: number = Number.POSITIVE_INFINITY;
 

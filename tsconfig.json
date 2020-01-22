@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "sourceMap": true,
-    "strict": true,
     "target": "es5",
     "lib": ["es7", "dom"]
   },

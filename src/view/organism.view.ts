@@ -1,19 +1,17 @@
-import { IDrawable } from '../interfaces';
+import { ActualOrganism, IDrawable } from './interfaces';
 import { getRandomColor, noop, random } from '../helper';
 
 export class OrganismView implements IDrawable {
-  constructor(x: number, y: number) {
+  constructor(
+    organism: ActualOrganism,
+    public x: number,
+    public y: number
+  ) {
     this.color = getRandomColor();
-    this.x = x;
-    this.y = y;
-    this.width = 3;
-    this.height = 3;
+    this.size = organism.size;
   }
 
-  public x: number;
-  public y: number;
-  public width: number;
-  public height: number;
+  public size: number;
   public color: string;
 
   public updatePosition(maxX: number, maxY: number) {
@@ -35,7 +33,9 @@ export class OrganismView implements IDrawable {
     const originalColor = context.fillStyle;
 
     context.fillStyle = this.color;
-    context.fillRect(this.x, this.y, this.width, this.height);
+    context.beginPath();
+    context.arc(this.x, this.y, this.size / 2, 0, 2 * Math.PI);
+    context.fill();
     context.fillStyle = originalColor;
   }
 

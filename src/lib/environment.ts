@@ -1,7 +1,6 @@
 import { Organism } from './organism';
-import { IEnvironment, IEnvironmentSettings } from './interfaces';
 
-export class Environment implements IEnvironment {
+export class Environment {
   constructor(settings: IEnvironmentSettings) {
     Object.assign(this, {
       ...Environment.DEFAULT_PROPERTIES,
@@ -11,8 +10,10 @@ export class Environment implements IEnvironment {
 
   private readonly organisms: Array<Organism>;
 
-  public getSnapshot(timePassedMs: number): ISnapshot {
-    return { organisms: this.organisms };
+  public getSnapshot<T>(timePassedMs: number): ISnapshot<T> {
+    return {
+      organisms: this.organisms as unknown as Array<T>
+    };
   }
 
   private static DEFAULT_PROPERTIES(): IEnvironmentSettings {
@@ -22,6 +23,10 @@ export class Environment implements IEnvironment {
   }
 }
 
-export interface ISnapshot {
+export interface ISnapshot<T> {
+  organisms: Array<T>;
+}
+
+export interface IEnvironmentSettings {
   organisms: Array<Organism>;
 }
