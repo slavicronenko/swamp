@@ -1,5 +1,6 @@
 import { random } from '../helper';
 
+// TODO: Add gene type (number, string, etc)
 export class Gene {
   constructor(settings: IGeneSettings) {
     Object.assign(this, Gene.DEFAULT_SETTINGS, settings);
@@ -12,10 +13,11 @@ export class Gene {
   private readonly maxValue: number;
   private readonly precision: number;
   private readonly mutationThreshold: number;
+  private readonly generator?: Generator;
   private readonly mutator?: Mutator<any>;
 
   public generateValue(): number {
-    return random(this.minValue, this.maxValue, this.precision);
+    return (this.generator || Gene.DEFAULT_GENERATOR)(this);
   }
 
   public mutate<V>(value: V): V {
@@ -56,6 +58,10 @@ export class Gene {
     return value;
   }
 
+  private static DEFAULT_GENERATOR(gene: Gene): number {
+    return random(gene.minValue, gene.maxValue, gene.precision);
+  }
+
   private static get MUTATORS(): { [type: string]: Mutator<any> } {
     return {
       string: Gene.stringMutator,
@@ -72,7 +78,9 @@ interface IGeneSettings {
   maxValue?: number;
   precision?: number;
   mutationThreshold?: number;
+  generator?: Generator;
   mutator?: Mutator<any>;
 }
 
+type Generator = (gene: Gene) => any;
 type Mutator<V> = (gene: Gene, value: V) => V;
