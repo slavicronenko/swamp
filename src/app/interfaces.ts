@@ -9,5 +9,6 @@ export type EventHandler = (...params: Array<any>) => any;
 
 export type ActualOrganism = Organism & {
   size: number;
+  step: number;
   color: string;
 };

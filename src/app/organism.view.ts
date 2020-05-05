@@ -1,5 +1,5 @@
 import { ActualOrganism, IDrawable } from './interfaces';
-import { getRandomColor, noop, random } from '../helper';
+import { noop, random } from '../helper';
 
 export class OrganismView implements IDrawable {
   constructor(
@@ -8,10 +8,12 @@ export class OrganismView implements IDrawable {
     public y: number
   ) {
     this.color = organism.color;
+    this.step = organism.step;
     this.size = organism.size;
   }
 
   public size: number;
+  public step: number;
   public color: string;
 
   public updatePosition(maxX: number, maxY: number) {
@@ -42,10 +44,10 @@ export class OrganismView implements IDrawable {
   private static get STEPS(): Array<(organismView: OrganismView) => void> {
     return [
       noop,
-      (organismView: OrganismView) => organismView.y -= 1,
-      (organismView: OrganismView) => organismView.x += 1,
-      (organismView: OrganismView) => organismView.y += 1,
-      (organismView: OrganismView) => organismView.x -= 1,
+      (organismView: OrganismView) => organismView.y -= organismView.step,
+      (organismView: OrganismView) => organismView.x += organismView.step,
+      (organismView: OrganismView) => organismView.y += organismView.step,
+      (organismView: OrganismView) => organismView.x -= organismView.step,
     ];
   }
 }
